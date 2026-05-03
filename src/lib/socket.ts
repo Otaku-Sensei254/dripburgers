@@ -4,11 +4,7 @@ function socketUrl(): string {
   if (process.env.REACT_APP_SOCKET_URL) {
     return process.env.REACT_APP_SOCKET_URL;
   }
-  if (typeof window !== 'undefined') {
-    const { protocol, hostname } = window.location;
-    return `${protocol}//${hostname}:4000`;
-  }
-  return 'http://localhost:4000';
+  return 'https://dripburgers-1.onrender.com';
 }
 
 let socket: Socket | null = null;
