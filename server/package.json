@@ -1,0 +1,12 @@
+{
+  "name": "drip-burgers-server",
+  "version": "1.0.0",
+  "description": "Drip Burgers Socket.IO ordering server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.3"
+  }
+}
