@@ -17,7 +17,7 @@ export function MenuSection({ showOrderHint = true }: MenuSectionProps) {
             Burgers, pizza, choma, chips & drinks
           </h2>
           <p className="mt-4 text-neutral-400">
-            Prices in KES. When you are seated, scan your table QR to send an order straight to the pass.
+             When you are seated, scan your table QR to send an order straight to the pass.
           </p>
           {showOrderHint && (
             <p className="mt-2 text-sm text-amber-400/80">

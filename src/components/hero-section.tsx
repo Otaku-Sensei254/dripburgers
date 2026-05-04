@@ -7,7 +7,7 @@ const demoTables = ['1', '2', '3', 'VIP-A'];
 
 export function HeroSection() {
   return (
-    <section className="flex flex-col overflow-hidden bg-neutral-950 pt-24 pb-[500px] text-white md:pt-32 dark">
+    <section className="flex flex-col overflow-hidden bg-neutral-950 pt-24 pb-20 text-white md:pt-32 dark">
       <ContainerScroll
         titleComponent={
           <>
