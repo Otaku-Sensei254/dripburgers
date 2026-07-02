@@ -35,6 +35,7 @@ const io = new Server(server, {
 function broadcastOrders() {
   const list = Array.from(orders.values()).sort((a, b) => a.createdAt - b.createdAt);
   io.to('kitchen').emit('orders:sync', list);
+  io.to('counter').emit('counter:sync', list);
 }
 
 io.on('connection', (socket) => {
@@ -49,6 +50,17 @@ io.on('connection', (socket) => {
       return;
     }
     socket.emit('kitchen:auth:error', 'Invalid password');
+  });
+
+  socket.on('counter:auth', ({ password }) => {
+    if (password === KITCHEN_PASSWORD) {
+      socket.data.isCounter = true;
+      socket.join('counter');
+      socket.emit('counter:authenticated');
+      broadcastOrders();
+      return;
+    }
+    socket.emit('counter:auth:error', 'Invalid password');
   });
 
   socket.on('order:submit', ({ tableId, items, note }) => {
@@ -84,9 +96,41 @@ io.on('connection', (socket) => {
       socket.emit('order:error', 'Order not found');
       return;
     }
-    orders.delete(orderId);
+    const order = orders.get(orderId);
+    order.status = 'ready';
     broadcastOrders();
     socket.emit('order:completed:ack', { orderId });
+  });
+
+  socket.on('order:pay', ({ orderId, phone }) => {
+    if (!socket.data.isCounter || !socket.rooms.has('counter')) {
+      socket.emit('order:error', 'Not authorized');
+      return;
+    }
+    if (!orderId || !orders.has(orderId)) {
+      socket.emit('order:error', 'Order not found');
+      return;
+    }
+    const order = orders.get(orderId);
+    if (!phone || typeof phone !== 'string' || phone.trim().length < 10) {
+      socket.emit('order:error', 'Valid phone number required');
+      return;
+    }
+    const stkId = randomUUID();
+    const receipt = {
+      receiptId: randomUUID(),
+      orderId: order.id,
+      tableId: order.tableId,
+      items: order.items,
+      note: order.note,
+      phone: phone.trim(),
+      total: order.items.reduce((s, i) => s + i.price * i.qty, 0),
+      stkId,
+      paidAt: Date.now(),
+    };
+    orders.delete(orderId);
+    broadcastOrders();
+    socket.emit('order:paid', receipt);
   });
 });
 

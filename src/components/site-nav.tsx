@@ -27,6 +27,9 @@ export function SiteNav() {
           <NavLink className={({ isActive }) => navClass(isActive)} to="/kitchen">
             Kitchen
           </NavLink>
+          <NavLink className={({ isActive }) => navClass(isActive)} to="/counter">
+            Counter
+          </NavLink>
         </nav>
       </div>
     </header>

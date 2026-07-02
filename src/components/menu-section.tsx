@@ -1,5 +1,5 @@
 import React from 'react';
-import { menuByCategory } from '../data/menu';
+import { menuByCategory, CATEGORY_NOTES } from '../data/menu';
 
 type MenuSectionProps = {
   showOrderHint?: boolean;
@@ -30,6 +30,9 @@ export function MenuSection({ showOrderHint = true }: MenuSectionProps) {
           {Object.entries(grouped).map(([category, items]) => (
             <div key={category}>
               <h3 className="border-b border-white/10 pb-3 text-lg font-semibold text-white">{category}</h3>
+              {CATEGORY_NOTES[category] && (
+                <p className="mt-2 text-sm text-amber-400/80">{CATEGORY_NOTES[category]}</p>
+              )}
               <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((item) => (
                   <li

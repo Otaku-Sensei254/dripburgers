@@ -6,6 +6,7 @@ import { HomePage } from './pages/home-page';
 import { ContactPage } from './pages/contact-page';
 import { TableOrderPage } from './pages/table-order-page';
 import { KitchenPage } from './pages/kitchen-page';
+import { CounterPage } from './pages/counter-page';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         />
         <Route path="/table/:tableId" element={<TableOrderPage />} />
         <Route path="/kitchen" element={<KitchenPage />} />
+        <Route path="/counter" element={<CounterPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

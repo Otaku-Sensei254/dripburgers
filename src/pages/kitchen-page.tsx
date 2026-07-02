@@ -212,10 +212,14 @@ export function KitchenPage() {
           </div>
         ) : (
           <ul className="grid gap-5 lg:grid-cols-2">
-            {orders.map((o) => (
+            {[...orders].sort((a, b) => (a.status === 'ready' ? 1 : 0) - (b.status === 'ready' ? 1 : 0)).map((o) => (
               <li
                 key={o.id}
-                className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-neutral-900 to-neutral-950 p-6 shadow-xl"
+                className={`rounded-3xl border bg-gradient-to-br from-neutral-900 to-neutral-950 p-6 shadow-xl ${
+                  o.status === 'ready'
+                    ? 'border-emerald-500/30'
+                    : 'border-amber-500/20'
+                }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-white/10 pb-4">
                   <div>
@@ -260,13 +264,19 @@ export function KitchenPage() {
                     {o.note}
                   </p>
                 ) : null}
-                <button
-                  type="button"
-                  className="mt-6 w-full rounded-xl bg-emerald-600 py-3.5 font-semibold text-white transition hover:bg-emerald-500"
-                  onClick={() => completeOrder(o.id)}
-                >
-                  Mark done & clear
-                </button>
+                {o.status === 'ready' ? (
+                  <div className="mt-6 w-full rounded-xl border border-emerald-500/40 bg-emerald-500/10 py-3.5 text-center text-sm font-semibold text-emerald-400">
+                    Ready for counter pickup
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="mt-6 w-full rounded-xl bg-emerald-600 py-3.5 font-semibold text-white transition hover:bg-emerald-500"
+                    onClick={() => completeOrder(o.id)}
+                  >
+                    Mark done
+                  </button>
+                )}
               </li>
             ))}
           </ul>

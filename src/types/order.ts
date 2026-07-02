@@ -10,6 +10,6 @@ export type KitchenOrder = {
   tableId: string;
   items: CartLine[];
   note: string;
-  status: 'pending';
+  status: 'pending' | 'ready';
   createdAt: number;
 };
